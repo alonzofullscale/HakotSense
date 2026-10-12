@@ -37,7 +37,7 @@ jobs:
             for attempt in {1..20}; do
               status="$(docker inspect \
                 --format='{{.State.Healt.Status}}' \
-                skilltrail-c)"
+                skilltrail-ci)"
 
               if [ "$status" == "healthy" ]; then
                echo "SkillTrail is healthy"
