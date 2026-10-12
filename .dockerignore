@@ -1,0 +1,6 @@
+.git
+.github
+.openai
+README.md
+compose.yaml
+*.log

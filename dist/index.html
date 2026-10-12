@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="SkillTrail is a personal learning and peer skill-verification workspace." />
+  <meta name="theme-color" content="#153f36" />
+  <title>SkillTrail — Turn learning into proof</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard" aria-label="SkillTrail dashboard">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SkillTrail</span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="dashboard">
+          <span class="nav-icon" aria-hidden="true">⌂</span><span>Overview</span>
+        </button>
+        <button class="nav-item" data-view="paths">
+          <span class="nav-icon" aria-hidden="true">↗</span><span>Learning paths</span>
+          <span class="nav-count">2</span>
+        </button>
+        <button class="nav-item" data-view="skills">
+          <span class="nav-icon" aria-hidden="true">◇</span><span>Skill portfolio</span>
+        </button>
+        <button class="nav-item" data-view="reviews">
+          <span class="nav-icon" aria-hidden="true">✓</span><span>Peer reviews</span>
+          <span class="nav-count accent" id="review-count">2</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-section">
+        <p class="sidebar-label">Your focus</p>
+        <div class="focus-card">
+          <div class="focus-card-top">
+            <span class="focus-symbol">D</span>
+            <span class="status-pill">In progress</span>
+          </div>
+          <strong>Docker foundations</strong>
+          <div class="mini-progress"><span id="sidebar-progress"></span></div>
+          <small id="sidebar-progress-label">68% complete</small>
+        </div>
+      </div>
+
+      <div class="profile-mini">
+        <div class="avatar">AS</div>
+        <div><strong>Alex Santos</strong><small>Software developer</small></div>
+        <button class="icon-button" id="reset-button" title="Reset demo data" aria-label="Reset demo data">↺</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="icon-button mobile-menu" id="menu-button" aria-label="Open navigation">☰</button>
+        <div class="crumb"><span id="crumb-label">Overview</span><span class="live-dot">Live</span></div>
+        <div class="top-actions">
+          <button class="button button-quiet" id="quick-review-button">Request a review</button>
+          <button class="button button-primary" id="log-button"><span>＋</span> Log learning</button>
+        </div>
+      </header>
+
+      <section class="view active" id="dashboard-view" data-title="Overview">
+        <div class="hero-row">
+          <div>
+            <p class="eyebrow">Monday, October 12</p>
+            <h1>Keep the momentum,<br />Alex.</h1>
+            <p class="hero-copy">You’re one focused session away from this week’s goal.</p>
+          </div>
+          <div class="week-ring" id="week-ring" aria-label="Weekly goal progress">
+            <div><strong id="week-hours">4.5</strong><span>of 6h</span></div>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <article class="stat-card"><span>Learning streak</span><strong id="streak-stat">8 <small>days</small></strong><p>Personal best: 12 days</p></article>
+          <article class="stat-card"><span>Hours invested</span><strong id="hours-stat">26.5</strong><p>↑ 18% from last month</p></article>
+          <article class="stat-card"><span>Skills in progress</span><strong>4</strong><p>2 ready for validation</p></article>
+          <article class="stat-card"><span>Peer validations</span><strong id="validation-stat">7</strong><p>From 5 different peers</p></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel journey-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Active journey</p><h2>Docker &amp; CI/CD</h2></div>
+              <button class="text-button" data-view-link="paths">View full path →</button>
+            </div>
+            <div class="journey-body">
+              <div class="journey-copy">
+                <div class="level-line"><span>Current level</span><strong>Foundation</strong></div>
+                <h3 id="module-title">Containerize your first app</h3>
+                <p id="module-description">Build an image, run it locally, and explain the lifecycle in your own words.</p>
+                <div class="progress-row"><div class="progress-track"><span id="journey-progress"></span></div><strong id="journey-progress-label">68%</strong></div>
+                <div class="journey-meta"><span>◷ 35 min remaining</span><span>4 of 6 tasks</span></div>
+                <button class="button button-dark" id="continue-button">Continue learning <span>→</span></button>
+              </div>
+              <div class="terminal-card" aria-label="Docker learning preview">
+                <div class="terminal-top"><span></span><span></span><span></span><small>terminal</small></div>
+                <code><i>$</i> docker build -t my-app .</code>
+                <code class="muted">[+] Building 8.4s (10/10)</code>
+                <code class="success">✓ image ready</code>
+                <div class="cube-art"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel review-panel">
+            <div class="panel-heading"><div><p class="eyebrow">Peer reviews</p><h2>Waiting for you</h2></div><button class="text-button" data-view-link="reviews">See all</button></div>
+            <div id="dashboard-reviews"></div>
+          </article>
+        </div>
+
+        <article class="panel activity-panel">
+          <div class="panel-heading"><div><p class="eyebrow">Your trail</p><h2>Recent activity</h2></div><button class="filter-button">This month⌄</button></div>
+          <div class="activity-list" id="activity-list"></div>
+        </article>
+      </section>
+
+      <section class="view" id="paths-view" data-title="Learning paths">
+        <div class="page-heading"><div><p class="eyebrow">Structured growth</p><h1>Learning paths</h1><p>Turn broad ambitions into a sequence of finishable milestones.</p></div><button class="button button-primary" id="new-path-button">＋ Add a path</button></div>
+        <div class="path-layout">
+          <article class="path-featured">
+            <div class="path-top"><span class="path-index">01</span><span class="status-pill light">In progress</span></div>
+            <div><p class="eyebrow light-text">Infrastructure · 6 weeks</p><h2>Docker &amp;<br />CI/CD</h2><p>Package, test, and deliver applications with confidence.</p></div>
+            <div><div class="path-progress-copy"><span>Overall progress</span><strong id="path-progress-label">68%</strong></div><div class="progress-track light-track"><span id="path-progress"></span></div></div>
+          </article>
+          <div class="milestone-list" id="milestone-list"></div>
+        </div>
+        <h2 class="section-title">Explore next</h2>
+        <div class="explore-grid">
+          <article class="explore-card"><span class="explore-icon lilac">⌘</span><p class="eyebrow">Development</p><h3>Cloud foundations</h3><p>Understand compute, storage, networking, and deployment patterns.</p><button class="text-button explore-action">Add to plan →</button></article>
+          <article class="explore-card"><span class="explore-icon sand">▦</span><p class="eyebrow">Engineering</p><h3>System design</h3><p>Build a vocabulary for scalable, reliable software systems.</p><button class="text-button explore-action">Add to plan →</button></article>
+          <article class="explore-card"><span class="explore-icon mint">◎</span><p class="eyebrow">Collaboration</p><h3>Technical leadership</h3><p>Guide decisions, reviews, and delivery without losing the team.</p><button class="text-button explore-action">Add to plan →</button></article>
+        </div>
+      </section>
+
+      <section class="view" id="skills-view" data-title="Skill portfolio">
+        <div class="page-heading"><div><p class="eyebrow">Evidence over claims</p><h1>Skill portfolio</h1><p>Your capability map, backed by projects and peer validation.</p></div><button class="button button-primary" id="add-skill-button">＋ Add a skill</button></div>
+        <div class="skill-summary"><div><span>Overall profile</span><strong>Developing</strong></div><p>9 skills · 7 peer validations · last updated today</p></div>
+        <div class="skill-table" id="skill-table"></div>
+      </section>
+
+      <section class="view" id="reviews-view" data-title="Peer reviews">
+        <div class="page-heading"><div><p class="eyebrow">Trusted feedback</p><h1>Peer reviews</h1><p>Validate skills with people who have seen the work firsthand.</p></div><button class="button button-primary" id="request-review-button">＋ Request a review</button></div>
+        <div class="review-tabs"><button class="active" data-review-filter="received">Received <span id="received-count">2</span></button><button data-review-filter="sent">Sent <span>2</span></button><button data-review-filter="completed">Completed <span id="completed-count">7</span></button></div>
+        <div class="review-workspace" id="review-workspace"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="modal" id="learning-modal">
+    <form method="dialog" id="learning-form">
+      <div class="modal-heading"><div><p class="eyebrow">Add to your trail</p><h2>Log a learning session</h2></div><button class="modal-close" value="cancel" aria-label="Close">×</button></div>
+      <label>What did you work on?<input name="topic" required placeholder="e.g. Docker volumes and bind mounts" /></label>
+      <div class="form-row"><label>Skill<select name="skill"><option>Docker</option><option>CI/CD</option><option>GitHub Actions</option><option>Linux</option></select></label><label>Time spent<input name="minutes" type="number" min="5" max="480" value="45" required /></label></div>
+      <label>Reflection<textarea name="reflection" rows="3" placeholder="What clicked? What needs another pass?"></textarea></label>
+      <div class="modal-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-primary" value="default" type="submit">Save session</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="review-modal">
+    <form method="dialog" id="review-form">
+      <div class="modal-heading"><div><p class="eyebrow">Evidence-based growth</p><h2>Request a peer review</h2></div><button class="modal-close" value="cancel" aria-label="Close">×</button></div>
+      <label>Skill to validate<select name="skill"><option>Docker · Foundation → Working</option><option>CI/CD · Beginner → Foundation</option><option>GitHub Actions · Beginner → Foundation</option></select></label>
+      <label>Peer name<input name="peer" required placeholder="Who has seen your work?" /></label>
+      <label>Evidence or context<textarea name="evidence" rows="4" required placeholder="Link a project or describe the work they should review."></textarea></label>
+      <div class="modal-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-primary" value="default" type="submit">Send request</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
