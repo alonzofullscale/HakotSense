@@ -1,0 +1,73 @@
+name: Docker CI
+
+on:
+   pull_request:
+   push:
+      branches:
+         - main
+
+permissions:
+   contents: read
+
+jobs:
+    build-and-test:
+      name: Build and smoke test
+      runs-on: ubuntu-latest
+      timeout-minutes: 10
+
+      steps:
+        - name: Check out repository
+          uses: actions/checkout@v6
+
+        - name: Validate Compose configuration
+          run: docker compose config --quiet
+
+        - name: Build Docker image
+          run: docker build --tag skilltrail:${{ github.sha }} .
+
+        - name: Start container
+          run: |
+           docker run --detach\
+             --name skilltrail-ci \
+             --publish 8080:8080 \
+             skilltrail:${{ github.sha }}
+
+        - name: Wait for healthy container
+          run: |
+            for attempt in {1..20}; do
+              status="$(docker inspect \
+                --format='{{.State.Healt.Status}}' \
+                skilltrail-c)"
+
+              if [ "$status" == "healthy" ]; then
+               echo "SkillTrail is healthy"
+               exit 0
+              fi
+
+              echo "Attempt $attempt: container is $status"
+              sleep 2
+            done
+
+            echo "Container did not become healthy"
+            docker logs skilltrail-ci
+        
+        - name: Smoke test homepage
+          run: |
+             curl --fail --silent --show-error \
+               http://127.0.0.1:8080/ \
+               | grep --quiet "SkillTrail"
+          
+
+        - name: Show logs on failure
+          if: failure()
+          run: docker logs skilltrail-ci || true
+
+        - name: Remove test container
+          if: always()
+          run: docker rm --force skilltrail-ci || true
+
+
+
+
+
+  
